@@ -1,0 +1,70 @@
+{
+  "appTitle": "NXLegacy JSON Manager",
+  "newEntry": "New Game Entry",
+  "formDescription": "Fill in the details below to create a new game entry. All fields marked with an asterisk (*) are required.",
+  "common": {
+    "version": "Version",
+    "tid": "TID",
+    "links": "Links",
+    "required": "*"
+  },
+  "validation": {
+    "invalidBaseId": "TID must be 16 hexadecimal characters ending with 000",
+    "invalidDlcId": "TID must be 16 hexadecimal characters",
+    "invalidJson": "Invalid JSON file format",
+    "invalidTidFilename": "Invalid TID in filename. Must be 16 hexadecimal characters ending with 000",
+    "missingVersion": "Missing version number",
+    "invalidLinks": "Invalid links format"
+  },
+  "baseGame": {
+    "title": "Base Game",
+    "id": "Base ID",
+    "version": "Base Version",
+    "required": "Required field",
+    "links": "Base Game Links"
+  },
+  "dlcPack": {
+    "title": "DLC Pack",
+    "include": "Include DLC Pack",
+    "links": "DLC Pack Links"
+  },
+  "updates": {
+    "title": "Updates",
+    "addUpdate": "Add Update",
+    "id": "Update ID",
+    "version": "Update Version",
+    "versionNote": "Version must be a multiple of 65536",
+    "increment": "Increment by 65536",
+    "links": "Update Links"
+  },
+  "dlcs": {
+    "title": "DLCs",
+    "addDlc": "Add DLC",
+    "id": "DLC ID",
+    "version": "DLC Version",
+    "searchPlaceholder": "Search DLC by TID...",
+    "links": "DLC Links"
+  },
+  "links": {
+    "addLink": "Add Link",
+    "name": "Link name",
+    "url": "URL",
+    "urlPlaceholder": "Enter URL",
+    "domainInferred": "Domain name will be used if left empty"
+  },
+  "actions": {
+    "save": "Save Game Data",
+    "delete": "Delete",
+    "close": "Close",
+    "add": "Add"
+  },
+  "jsonActions": {
+    "title": "JSON Management",
+    "load": "Load JSON",
+    "view": "View JSON",
+    "preview": "JSON Preview",
+    "loadError": "Error loading JSON: {{error}}",
+    "saveError": "Error saving data. Please try again.",
+    "fileSelect": "Select JSON file"
+  }
+}

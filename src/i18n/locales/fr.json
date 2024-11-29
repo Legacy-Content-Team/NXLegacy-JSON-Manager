@@ -1,0 +1,70 @@
+{
+  "appTitle": "NXLegacy JSON Manager",
+  "newEntry": "Nouvelle Entrée de Jeu",
+  "formDescription": "Remplissez les détails ci-dessous pour créer une nouvelle entrée de jeu. Les champs marqués d'un astérisque (*) sont obligatoires.",
+  "common": {
+    "version": "Version",
+    "tid": "TID",
+    "links": "Liens",
+    "required": "*"
+  },
+  "validation": {
+    "invalidBaseId": "Le TID doit être composé de 16 caractères hexadécimaux se terminant par 000",
+    "invalidDlcId": "Le TID doit être composé de 16 caractères hexadécimaux",
+    "invalidJson": "Format de fichier JSON invalide",
+    "invalidTidFilename": "TID invalide dans le nom du fichier. Doit être composé de 16 caractères hexadécimaux se terminant par 000",
+    "missingVersion": "Numéro de version manquant",
+    "invalidLinks": "Format des liens invalide"
+  },
+  "baseGame": {
+    "title": "Jeu de Base",
+    "id": "ID de Base",
+    "version": "Version de Base",
+    "required": "Champ obligatoire",
+    "links": "Liens du Jeu de Base"
+  },
+  "dlcPack": {
+    "title": "Pack DLC",
+    "include": "Inclure le Pack DLC",
+    "links": "Liens du Pack DLC"
+  },
+  "updates": {
+    "title": "Mises à jour",
+    "addUpdate": "Ajouter une mise à jour",
+    "id": "ID de Mise à jour",
+    "version": "Version de Mise à jour",
+    "versionNote": "La version doit être un multiple de 65536",
+    "increment": "Incrémenter de 65536",
+    "links": "Liens de Mise à jour"
+  },
+  "dlcs": {
+    "title": "DLCs",
+    "addDlc": "Ajouter un DLC",
+    "id": "ID du DLC",
+    "version": "Version du DLC",
+    "searchPlaceholder": "Rechercher un DLC par TID...",
+    "links": "Liens du DLC"
+  },
+  "links": {
+    "addLink": "Ajouter un lien",
+    "name": "Nom du lien",
+    "url": "URL",
+    "urlPlaceholder": "Entrer l'URL",
+    "domainInferred": "Le nom de domaine sera utilisé si laissé vide"
+  },
+  "actions": {
+    "save": "Sauvegarder les données",
+    "delete": "Supprimer",
+    "close": "Fermer",
+    "add": "Ajouter"
+  },
+  "jsonActions": {
+    "title": "Gestion JSON",
+    "load": "Charger JSON",
+    "view": "Voir JSON",
+    "preview": "Aperçu JSON",
+    "loadError": "Erreur lors du chargement du JSON : {{error}}",
+    "saveError": "Erreur lors de la sauvegarde des données. Veuillez réessayer.",
+    "fileSelect": "Sélectionner un fichier JSON"
+  }
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import type { GameLink } from '../types';
 import LinksList from './LinksList';
+import { useTranslation } from 'react-i18next';
 
 interface DlcPackSectionProps {
   enabled: boolean;
@@ -15,6 +16,8 @@ export default function DlcPackSection({
   links,
   setLinks,
 }: DlcPackSectionProps) {
+  const { t } = useTranslation();
+  
   return (
     <div className="space-y-2">
       <div className="flex items-center space-x-2">
@@ -26,16 +29,17 @@ export default function DlcPackSection({
           id="dlc-pack-toggle"
         />
         <label htmlFor="dlc-pack-toggle" className="text-sm font-medium text-gray-700 dark:text-white">
-          Include DLC Pack
+          {t('dlcPack.include')}
         </label>
       </div>
 
       {enabled && (
         <div className="pl-6">
           <LinksList
-            title="DLC Pack Links"
+            title={t('dlcPack.links')}
             links={links}
             setLinks={setLinks}
+            showTypeSelector={false}
           />
         </div>
       )}

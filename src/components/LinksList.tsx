@@ -7,15 +7,24 @@ interface LinksListProps {
   title: string;
   links: GameLink;
   setLinks: (links: GameLink) => void;
+  showTypeSelector?: boolean;
 }
 
-export default function LinksList({ title, links, setLinks }: LinksListProps) {
+const FILE_TYPES = ['nsp', 'xci', 'nsz', 'xcz'] as const;
+
+export default function LinksList({ title, links, setLinks, showTypeSelector = true }: LinksListProps) {
   const { t } = useTranslation();
   const [tempKeys, setTempKeys] = React.useState<Record<string, string>>({});
 
   const addLink = () => {
     const tempKey = `temp-${Date.now()}`;
-    setLinks({ ...links, [tempKey]: '' });
+    setLinks({ 
+      ...links, 
+      [tempKey]: {
+        url: '',
+        type: 'nsp'
+      }
+    });
     setTempKeys(prev => ({ ...prev, [tempKey]: '' }));
   };
 
@@ -30,7 +39,10 @@ export default function LinksList({ title, links, setLinks }: LinksListProps) {
 
   const handleUrlChange = (key: string, url: string) => {
     const newLinks = { ...links };
-    newLinks[key] = url;
+    newLinks[key] = {
+      ...newLinks[key],
+      url
+    };
     
     // If this is a temp key and we don't have a custom name yet, suggest domain
     if (key.startsWith('temp-') && !tempKeys[key]) {
@@ -38,6 +50,15 @@ export default function LinksList({ title, links, setLinks }: LinksListProps) {
       setTempKeys(prev => ({ ...prev, [key]: suggestedKey }));
     }
     
+    setLinks(newLinks);
+  };
+
+  const handleTypeChange = (key: string, type: typeof FILE_TYPES[number]) => {
+    const newLinks = { ...links };
+    newLinks[key] = {
+      ...newLinks[key],
+      type
+    };
     setLinks(newLinks);
   };
 
@@ -49,7 +70,7 @@ export default function LinksList({ title, links, setLinks }: LinksListProps) {
     if (!key.startsWith('temp-')) return;
 
     const newLinks = { ...links };
-    const finalKey = tempKeys[key] || getDomainPlaceholder(newLinks[key]) || key;
+    const finalKey = tempKeys[key] || getDomainPlaceholder(newLinks[key].url) || key;
     
     if (key !== finalKey) {
       const value = newLinks[key];
@@ -89,13 +110,28 @@ export default function LinksList({ title, links, setLinks }: LinksListProps) {
       </div>
       {Object.entries(links).map(([key, value]) => (
         <div key={key} className="flex flex-col sm:flex-row gap-2">
-          <input
-            type="url"
-            value={value}
-            onChange={(e) => handleUrlChange(key, e.target.value)}
-            placeholder={t('links.urlPlaceholder')}
-            className="flex-[3] rounded-md border-gray-300 dark:border-dark-border dark:bg-dark-input dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
-          />
+          <div className={`${showTypeSelector ? 'flex-[3]' : 'flex-1'} flex gap-2`}>
+            <input
+              type="url"
+              value={value.url}
+              onChange={(e) => handleUrlChange(key, e.target.value)}
+              placeholder={t('links.urlPlaceholder')}
+              className="flex-1 rounded-md border-gray-300 dark:border-dark-border dark:bg-dark-input dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+            />
+            {showTypeSelector && (
+              <select
+                value={value.type}
+                onChange={(e) => handleTypeChange(key, e.target.value as typeof FILE_TYPES[number])}
+                className="w-24 rounded-md border-gray-300 dark:border-dark-border dark:bg-dark-input dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm uppercase"
+              >
+                {FILE_TYPES.map(type => (
+                  <option key={type} value={type} className="uppercase">
+                    {type}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
           <div className="flex gap-2">
             <input
               type="text"

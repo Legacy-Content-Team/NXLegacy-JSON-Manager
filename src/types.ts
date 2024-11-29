@@ -1,5 +1,8 @@
 export interface GameLink {
-  [key: string]: string;
+  [key: string]: {
+    url: string;
+    type: 'nsp' | 'xci' | 'nsz' | 'xcz';
+  };
 }
 
 export interface Update {

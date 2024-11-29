@@ -6,22 +6,33 @@
     "version": "Version",
     "tid": "TID",
     "links": "Liens",
-    "required": "*"
+    "required": "*",
+    "copy": "Copier",
+    "copied": "Copié !",
+    "dragAndDrop": {
+      "title": "Déposez le Fichier JSON Ici",
+      "subtitle": "Le nom du fichier doit être un TID valide se terminant par 000"
+    }
   },
   "validation": {
     "invalidBaseId": "Le TID doit être composé de 16 caractères hexadécimaux se terminant par 000",
-    "invalidDlcId": "Le TID doit être composé de 16 caractères hexadécimaux",
+    "invalidDlcId": "ID de DLC invalide (doit commencer par le préfixe de base)",
     "invalidJson": "Format de fichier JSON invalide",
     "invalidTidFilename": "TID invalide dans le nom du fichier. Doit être composé de 16 caractères hexadécimaux se terminant par 000",
     "missingVersion": "Numéro de version manquant",
-    "invalidLinks": "Format des liens invalide"
+    "invalidLinks": "Format des liens invalide",
+    "dropJsonOnly": "Veuillez déposer un fichier JSON",
+    "enterBaseTidFirst": "Entrez un TID de base valide pour ajouter des DLC",
+    "enterBaseTidFirstUpdates": "Entrez un TID de base valide pour ajouter des mises à jour"
   },
   "baseGame": {
     "title": "Jeu de Base",
     "id": "ID de Base",
     "version": "Version de Base",
     "required": "Champ obligatoire",
-    "links": "Liens du Jeu de Base"
+    "links": "Liens du Jeu de Base",
+    "tidPlaceholder": "Entrez un ID hexadécimal de 16 caractères",
+    "characterCount": "{{current}}/{{max}}"
   },
   "dlcPack": {
     "title": "Pack DLC",
@@ -35,7 +46,8 @@
     "version": "Version de Mise à jour",
     "versionNote": "La version doit être un multiple de 65536",
     "increment": "Incrémenter de 65536",
-    "links": "Liens de Mise à jour"
+    "links": "Liens de Mise à jour",
+    "nextVersion": "Version Suivante"
   },
   "dlcs": {
     "title": "DLCs",
@@ -43,7 +55,11 @@
     "id": "ID du DLC",
     "version": "Version du DLC",
     "searchPlaceholder": "Rechercher un DLC par TID...",
-    "links": "Liens du DLC"
+    "links": "Liens du DLC",
+    "prefix": "Préfixe",
+    "char": "Caractère",
+    "suffix": "Suffixe",
+    "suffixPlaceholder": "###"
   },
   "links": {
     "addLink": "Ajouter un lien",

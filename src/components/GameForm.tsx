@@ -131,6 +131,7 @@ export default function GameForm({ id, onSave, initialData }: GameFormProps) {
         <DlcsSection
           dlcs={dlcs}
           setDlcs={setDlcs}
+          baseId={baseId}
         />
       </div>
     </form>

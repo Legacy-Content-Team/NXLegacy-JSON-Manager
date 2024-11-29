@@ -1,5 +1,5 @@
 import React from 'react';
-import { Database, FileJson, Save, Trash2, Package } from 'lucide-react';
+import { Database, FileJson, Save, Trash2, Package, Upload } from 'lucide-react';
 import packageJson from '../package.json';
 import GameForm from './components/GameForm';
 import ThemeToggle from './components/ThemeToggle';
@@ -12,6 +12,7 @@ import { validateTid } from './utils/tidUtils';
 function App() {
   const { t } = useTranslation();
   const [currentData, setCurrentData] = React.useState<GameData | null>(null);
+  const [isDragging, setIsDragging] = React.useState(false);
   const version = packageJson.version;
 
   const handleClearData = () => {
@@ -58,8 +59,105 @@ function App() {
     }
   };
 
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+      setIsDragging(false);
+    }
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    const file = e.dataTransfer.files[0];
+    if (!file || !file.name.endsWith('.json')) {
+      alert('Please drop a JSON file');
+      return;
+    }
+
+    const tid = file.name.replace(/\.json$/, '');
+    if (!validateTid(tid, true)) {
+      alert('Invalid TID in filename. Must be 16 hexadecimal characters ending with 000');
+      return;
+    }
+
+    try {
+      const text = await file.text();
+      const json = JSON.parse(text);
+      const normalizedJson = normalizeJsonStructure(json);
+      normalizedJson.base.id = tid;
+      setCurrentData(normalizedJson);
+    } catch (error) {
+      console.error('Error loading JSON:', error);
+      alert(`Error loading JSON: ${(error as Error).message}`);
+    }
+  };
+
+  const normalizeJsonStructure = (json: any): GameData => {
+    const normalizeDate = (obj: any) => {
+      if (obj.addedDate) return obj.addedDate;
+      if (obj.added_date) return obj.added_date;
+      return new Date().toISOString();
+    };
+
+    const base = {
+      id: '',  // Will be set from filename
+      version: typeof json.base?.version === 'number' ? json.base.version : 0,
+      links: json.base?.links || {},
+      addedDate: normalizeDate(json.base || {}),
+    };
+
+    const updates = (json.updates || []).map((update: any) => ({
+      id: update.id || '',
+      version: (typeof update.version === 'number' ? update.version : 0).toString(),
+      links: update.links || {},
+      addedDate: normalizeDate(update)
+    }));
+
+    const dlcs = (json.dlcs || []).map((dlc: any) => ({
+      id: dlc.id || '',
+      version: (typeof dlc.version === 'number' ? dlc.version : 0).toString(),
+      links: dlc.links || {},
+      addedDate: normalizeDate(dlc)
+    }));
+
+    const dlc_pack = json.dlc_pack ? {
+      links: json.dlc_pack.links || {},
+      addedDate: normalizeDate(json.dlc_pack)
+    } : undefined;
+
+    return { base, updates, dlcs, dlc_pack };
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-dark-bg transition-colors">
+    <div 
+      className="min-h-screen bg-gray-100 dark:bg-dark-bg transition-colors relative"
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
+      {isDragging && (
+        <div className="absolute inset-0 bg-indigo-500/10 dark:bg-dark-accent-primary/20 backdrop-blur-sm z-50 pointer-events-none">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="bg-white dark:bg-dark-card rounded-lg shadow-xl p-8 text-center transform scale-110 transition-transform">
+              <Upload className="w-12 h-12 text-indigo-500 dark:text-dark-accent-primary mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                Drop JSON File Here
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                File name must be a valid TID ending with 000
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <header className="bg-white dark:bg-dark-card shadow-md dark:shadow-dark-accent/5">
         <div className="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">

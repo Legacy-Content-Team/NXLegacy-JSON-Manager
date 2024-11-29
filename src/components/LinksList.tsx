@@ -9,8 +9,12 @@ interface LinksListProps {
 }
 
 export default function LinksList({ title, links, setLinks }: LinksListProps) {
+  const [tempKeys, setTempKeys] = React.useState<Record<string, string>>({});
+
   const addLink = () => {
-    setLinks({ ...links, [getDomainPlaceholder('')]: '' });
+    const tempKey = `temp-${Date.now()}`;
+    setLinks({ ...links, [tempKey]: '' });
+    setTempKeys(prev => ({ ...prev, [tempKey]: '' }));
   };
 
   const getDomainPlaceholder = (url: string): string => {
@@ -22,10 +26,39 @@ export default function LinksList({ title, links, setLinks }: LinksListProps) {
     }
   };
 
-  const updateLink = (oldKey: string, newKey: string, value: string) => {
+  const handleUrlChange = (key: string, url: string) => {
     const newLinks = { ...links };
-    delete newLinks[oldKey];
-    newLinks[newKey] = value;
+    newLinks[key] = url;
+    
+    // If this is a temp key and we don't have a custom name yet, suggest domain
+    if (key.startsWith('temp-') && !tempKeys[key]) {
+      const suggestedKey = getDomainPlaceholder(url);
+      setTempKeys(prev => ({ ...prev, [key]: suggestedKey }));
+    }
+    
+    setLinks(newLinks);
+  };
+
+  const handleKeyChange = (key: string, newName: string) => {
+    setTempKeys(prev => ({ ...prev, [key]: newName }));
+  };
+
+  const handleKeyBlur = (key: string) => {
+    if (!key.startsWith('temp-')) return;
+
+    const newLinks = { ...links };
+    const finalKey = tempKeys[key] || getDomainPlaceholder(newLinks[key]) || key;
+    
+    if (key !== finalKey) {
+      const value = newLinks[key];
+      delete newLinks[key];
+      newLinks[finalKey] = value;
+      setTempKeys(prev => {
+        const { [key]: _, ...rest } = prev;
+        return rest;
+      });
+    }
+    
     setLinks(newLinks);
   };
 
@@ -33,6 +66,10 @@ export default function LinksList({ title, links, setLinks }: LinksListProps) {
     const newLinks = { ...links };
     delete newLinks[key];
     setLinks(newLinks);
+    setTempKeys(prev => {
+      const { [key]: _, ...rest } = prev;
+      return rest;
+    });
   };
 
   return (
@@ -53,18 +90,15 @@ export default function LinksList({ title, links, setLinks }: LinksListProps) {
           <input
             type="url"
             value={value}
-            onChange={(e) => {
-              const newValue = e.target.value;
-              const suggestedKey = getDomainPlaceholder(newValue);
-              updateLink(key, key === '' ? suggestedKey : key, newValue);
-            }}
+            onChange={(e) => handleUrlChange(key, e.target.value)}
             placeholder="URL"
             className="flex-[3] rounded-md border-gray-300 dark:border-dark-border dark:bg-dark-input dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
           />
           <input
             type="text"
-            value={key}
-            onChange={(e) => updateLink(key, e.target.value, value)}
+            value={key.startsWith('temp-') ? tempKeys[key] || '' : key}
+            onChange={(e) => handleKeyChange(key, e.target.value)}
+            onBlur={() => handleKeyBlur(key)}
             placeholder="Link name"
             className="flex-1 rounded-md border-gray-300 dark:border-dark-border dark:bg-dark-input dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
           />

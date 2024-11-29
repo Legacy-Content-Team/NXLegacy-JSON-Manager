@@ -6,22 +6,33 @@
     "version": "Version",
     "tid": "TID",
     "links": "Links",
-    "required": "*"
+    "required": "*",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "dragAndDrop": {
+      "title": "Drop JSON File Here",
+      "subtitle": "File name must be a valid TID ending with 000"
+    }
   },
   "validation": {
     "invalidBaseId": "TID must be 16 hexadecimal characters ending with 000",
-    "invalidDlcId": "TID must be 16 hexadecimal characters",
+    "invalidDlcId": "Invalid DLC ID (must start with base prefix)",
     "invalidJson": "Invalid JSON file format",
     "invalidTidFilename": "Invalid TID in filename. Must be 16 hexadecimal characters ending with 000",
     "missingVersion": "Missing version number",
-    "invalidLinks": "Invalid links format"
+    "invalidLinks": "Invalid links format",
+    "dropJsonOnly": "Please drop a JSON file",
+    "enterBaseTidFirst": "Enter a valid base TID to add DLCs",
+    "enterBaseTidFirstUpdates": "Enter a valid base TID to add updates"
   },
   "baseGame": {
     "title": "Base Game",
     "id": "Base ID",
     "version": "Base Version",
     "required": "Required field",
-    "links": "Base Game Links"
+    "links": "Base Game Links",
+    "tidPlaceholder": "Enter 16-character hex ID",
+    "characterCount": "{{current}}/{{max}}"
   },
   "dlcPack": {
     "title": "DLC Pack",
@@ -35,7 +46,8 @@
     "version": "Update Version",
     "versionNote": "Version must be a multiple of 65536",
     "increment": "Increment by 65536",
-    "links": "Update Links"
+    "links": "Update Links",
+    "nextVersion": "Next Version"
   },
   "dlcs": {
     "title": "DLCs",
@@ -43,7 +55,11 @@
     "id": "DLC ID",
     "version": "DLC Version",
     "searchPlaceholder": "Search DLC by TID...",
-    "links": "DLC Links"
+    "links": "DLC Links",
+    "prefix": "Prefix",
+    "char": "Char",
+    "suffix": "Suffix",
+    "suffixPlaceholder": "###"
   },
   "links": {
     "addLink": "Add Link",

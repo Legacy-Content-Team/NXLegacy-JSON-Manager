@@ -1,6 +1,7 @@
 import React from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import type { GameLink } from '../types';
+import { useTranslation } from 'react-i18next';
 
 interface LinksListProps {
   title: string;
@@ -9,6 +10,7 @@ interface LinksListProps {
 }
 
 export default function LinksList({ title, links, setLinks }: LinksListProps) {
+  const { t } = useTranslation();
   const [tempKeys, setTempKeys] = React.useState<Record<string, string>>({});
 
   const addLink = () => {
@@ -82,33 +84,35 @@ export default function LinksList({ title, links, setLinks }: LinksListProps) {
           className="inline-flex items-center px-2 py-1 text-sm text-indigo-600 dark:text-dark-accent-primary hover:text-indigo-900 dark:hover:text-dark-accent-hover"
         >
           <Plus className="w-4 h-4 mr-1" />
-          Add Link
+          {t('links.addLink')}
         </button>
       </div>
       {Object.entries(links).map(([key, value]) => (
-        <div key={key} className="flex gap-2">
+        <div key={key} className="flex flex-col sm:flex-row gap-2">
           <input
             type="url"
             value={value}
             onChange={(e) => handleUrlChange(key, e.target.value)}
-            placeholder="URL"
-            className="flex-[3] rounded-md border-gray-300 dark:border-dark-border dark:bg-dark-input dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            placeholder={t('links.urlPlaceholder')}
+            className="flex-[3] rounded-md border-gray-300 dark:border-dark-border dark:bg-dark-input dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
           />
-          <input
-            type="text"
-            value={key.startsWith('temp-') ? tempKeys[key] || '' : key}
-            onChange={(e) => handleKeyChange(key, e.target.value)}
-            onBlur={() => handleKeyBlur(key)}
-            placeholder="Link name"
-            className="flex-1 rounded-md border-gray-300 dark:border-dark-border dark:bg-dark-input dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          />
-          <button
-            type="button"
-            onClick={() => removeLink(key)}
-            className="p-2 text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300"
-          >
-            <Trash2 className="w-4 h-4" />
-          </button>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={key.startsWith('temp-') ? tempKeys[key] || '' : key}
+              onChange={(e) => handleKeyChange(key, e.target.value)}
+              onBlur={() => handleKeyBlur(key)}
+              placeholder={t('links.name')}
+              className="flex-1 rounded-md border-gray-300 dark:border-dark-border dark:bg-dark-input dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm min-w-[120px]"
+            />
+            <button
+              type="button"
+              onClick={() => removeLink(key)}
+              className="p-2 text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       ))}
     </div>

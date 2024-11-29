@@ -55,6 +55,8 @@
   "actions": {
     "save": "Sauvegarder les données",
     "delete": "Supprimer",
+    "clearData": "Effacer toutes les données",
+    "clearConfirm": "Êtes-vous sûr de vouloir effacer toutes les données ? Cette action ne peut pas être annulée.",
     "close": "Fermer",
     "add": "Ajouter"
   },

@@ -55,6 +55,8 @@
   "actions": {
     "save": "Save Game Data",
     "delete": "Delete",
+    "clearData": "Clear All Data",
+    "clearConfirm": "Are you sure you want to clear all data? This action cannot be undone.",
     "close": "Close",
     "add": "Add"
   },

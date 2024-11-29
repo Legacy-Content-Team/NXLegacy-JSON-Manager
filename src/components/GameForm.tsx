@@ -40,6 +40,18 @@ export default function GameForm({ id, onSave, initialData }: GameFormProps) {
   const [dlcs, setDlcs] = useState<DLC[]>(initialData?.dlcs || []);
   
   React.useEffect(() => {
+    if (!initialData) {
+      // Reset all form state when initialData is null
+      setBaseId('');
+      setVersion('0');
+      setBaseLinks({});
+      setHasDlcPack(false);
+      setDlcPackLinks({});
+      setUpdates([]);
+      setDlcs([]);
+      return;
+    }
+    
     if (initialData?.dlcs) {
       setDlcs(initialData.dlcs.map(dlc => ({
       ...dlc,

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Database, FileJson, Save } from 'lucide-react';
+import { Database, FileJson, Save, Trash2, Package } from 'lucide-react';
+import packageJson from '../package.json';
 import GameForm from './components/GameForm';
 import ThemeToggle from './components/ThemeToggle';
 import LanguageToggle from './components/LanguageToggle';
@@ -11,6 +12,13 @@ import { validateTid } from './utils/tidUtils';
 function App() {
   const { t } = useTranslation();
   const [currentData, setCurrentData] = React.useState<GameData | null>(null);
+  const version = packageJson.version;
+
+  const handleClearData = () => {
+    if (window.confirm(t('actions.clearConfirm'))) {
+      setCurrentData(null);
+    }
+  };
 
   const handleSave = async (data: GameData) => {
     setCurrentData(data);
@@ -57,9 +65,12 @@ function App() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Database className="w-8 h-8 text-indigo-600 dark:text-dark-accent-primary" />
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                {t('appTitle')}
-              </h1>
+              <div className="flex flex-col">
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                  {t('appTitle')}
+                </h1>
+                <span className="text-sm font-normal text-blue-500 dark:text-blue-400">v{version}</span>
+              </div>
             </div>
             <div className="flex items-center space-x-2">
               <LanguageToggle />
@@ -85,16 +96,26 @@ function App() {
             </div>
             <div className="flex flex-col space-y-6">
               <div className="flex justify-between items-center">
-                <div className="flex-1 flex items-center gap-4">
+                <div className="flex items-center gap-4">
+                  <JsonActions currentData={currentData} onLoad={setCurrentData} />
+                </div>
+                <div className="flex items-center gap-4">
                   <button
                     type="submit"
                     form="game-form"
-                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 dark:bg-dark-accent-primary rounded-md hover:bg-indigo-700 dark:hover:bg-dark-accent-hover transition-colors"
+                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 dark:bg-dark-accent-primary rounded-md hover:bg-indigo-700 dark:hover:bg-dark-accent-hover transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-dark-bg"
                   >
                     <Save className="w-4 h-4 mr-2" />
-                    Save Game Data
+                    {t('actions.save')}
                   </button>
-                  <JsonActions currentData={currentData} onLoad={setCurrentData} />
+                  <button
+                    type="button"
+                    onClick={handleClearData}
+                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-900/20 rounded-md hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    {t('actions.clearData')}
+                  </button>
                 </div>
               </div>
               <GameForm id="game-form" onSave={handleSave} initialData={currentData} />
